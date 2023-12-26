@@ -1,3 +1,5 @@
 # My Quizzical Trivia App
 
-This is my attempt to the Quiziccal project for the React course on scrimba.
+This is a Quiziccal Trivia App project.
+
+It is work in progress and new features will be added as time goes on.
