@@ -34,27 +34,28 @@ const Question = ({ question, onAnswerSelection,userAnswers,showAnswers }) => {
     }
   }
 
+  const getButtonClass = (answerIndex) => {
+    const userAnswer = shuffledAnswers[answerIndex]
+    if(showAnswers && isAnswerCorrect !== null){
+      return isAnswerCorrect && answer === question.correct_answer
+        ? 'bg-green700'
+        : !isAnswerCorrect && selectedAnswer === answerIndex
+          ? 'bg-red-700'
+          : userAnswer === question.correct_answer
+            ? 'bg-green-300' : ''
+    } else if(selectedAnswer===answerIndex && !answersLocked) {
+      return 'bg-yellow-300'
+    }
+    return ''
+  }
+
   return (
     <div className="px-10 py-5">
         <h1 className="text-2xl font-medium">{question.question}</h1>
         <p className="mt-4">
             {shuffledAnswers.map((answer, index) => (
               <button key={index}
-                      className={`mx-2 bg-white px-4 py-2 text-xl font-medium rounded-xl 
-                                  ${
-                                    showAnswers && isAnswerCorrect !== null
-                                    ? isAnswerCorrect && answer === question.correct_answer
-                                      ?'bg-green-700'
-                                      :!isAnswerCorrect && selectedAnswer === index
-                                        ?'bg-red-700'
-                                        :answer === question.correct_answer
-                                          ?'bg-green-300'
-                                          :''
-                                    :selectedAnswer === index && !answersLocked
-                                    ?'bg-yellow-300'
-                                    :''
-                                  }`
-                                }
+                      className={`mx-2 bg-white px-4 py-2 text-xl font-medium rounded-xl ${getButtonClass(index)}`}
                       onClick={() => handleAnswerClick(index)}>
                 {answer}
               </button>
