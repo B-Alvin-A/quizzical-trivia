@@ -9,6 +9,9 @@ const Question = ({ question, onAnswerSelection,userAnswers,showAnswers }) => {
   useEffect(() => {
     const allAnswers = [...question.incorrect_answers, question.correct_answer]
     setShuffledAnswers(shuffleArray(allAnswers))
+    setSelectedAnswer(null)
+    setIsAnswerCorrect(null)
+    setAnswersLocked(false)
   },[question])
 
   useEffect(() => {
@@ -50,12 +53,12 @@ const Question = ({ question, onAnswerSelection,userAnswers,showAnswers }) => {
   }
 
   return (
-    <div className="px-10 py-5">
-        <h1 className="text-2xl font-medium">{question.question}</h1>
+    <div className="px-10 py-2">
+        <h1 className="text-xl font-medium">{question.question}</h1>
         <p className="mt-4">
             {shuffledAnswers.map((answer, index) => (
               <button key={index}
-                      className={`mx-2 px-4 py-2 text-xl font-medium border border-black rounded-xl ${getButtonClass(index)}`}
+                      className={`mx-2 px-4 border border-black rounded-xl ${getButtonClass(index)}`}
                       onClick={() => handleAnswerClick(index)}>
                 {answer}
               </button>

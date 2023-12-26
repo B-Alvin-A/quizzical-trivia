@@ -1,9 +1,10 @@
 import Question from "./Question"
 import { useState } from 'react';
 
-const QuestionsScreen = ({ questions }) => {
+const QuestionsScreen = ({ questions,onTryAgain }) => {
   const [userAnswers, setUserAnswers] = useState({});
   const [showAnswers, setShowAnswers] = useState(false);
+  const [fetchingQuestions, setFetchingQuestions] = useState(false);
 
   const handleAnswersSelection = (question, selectedAnswer) => {
     setUserAnswers(prevAnswers => ({
@@ -14,7 +15,6 @@ const QuestionsScreen = ({ questions }) => {
 
   const checkAnswers = () => {
     setShowAnswers(true)
-    console.log(userAnswers)
   }
 
   const calculateScore = () => {
@@ -27,8 +27,21 @@ const QuestionsScreen = ({ questions }) => {
     return correctScore
   }
 
+  const fetchNewQuestions = async() => {
+    setFetchingQuestions(true)
+    try {
+      await onTryAgain()
+      setFetchingQuestions(false)
+      setUserAnswers({})
+      setShowAnswers(false)
+    } catch(err) {
+      console.log("Error fetching new Questions: ",err)
+      setFetchingQuestions(false)
+    }
+  }
+
   return (
-    <div className="h-full py-8">
+    <div className="h-full py-4">
         {questions.map((question, index) => (
             <Question 
                 key={index}
@@ -38,11 +51,17 @@ const QuestionsScreen = ({ questions }) => {
                 showAnswers={showAnswers}
             />
         ))}
-        <button className="bg-[#182f43] text-white py-4 px-14 rounded-lg mx-12" onClick={checkAnswers}>{showAnswers ? 'Try Again':'Check Answers'}</button>
-        {showAnswers 
-          &&
-          <span className="text-3xl text-[#182f43] font-medium">You Scored {calculateScore()} / {questions.length} </span> 
-        }
+        <div className="mt-4">
+          <button className="bg-[#182f43] text-white py-2 px-10 rounded-lg mx-8" 
+                  onClick={showAnswers ? fetchNewQuestions:checkAnswers}
+                  disabled={fetchingQuestions}>
+            {showAnswers ? (fetchingQuestions ? 'Loading...':'Try Again'):'Check Answers'}
+          </button>
+          {showAnswers 
+            &&
+            <span className="text-2xl text-[#182f43] font-medium">You Scored {calculateScore()} / {questions.length} </span> 
+          }
+        </div>
         
     </div>
   )
