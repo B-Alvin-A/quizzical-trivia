@@ -11,6 +11,12 @@ node_modules
 dist
 dist-ssr
 *.local
+data
+samplePIC.png
+services
+.gitignore
+src/hooks
+gpt.txt
 
 # Editor directories and files
 .vscode/*
