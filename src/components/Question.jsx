@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import he from 'he'
 
 const Question = ({ question, onAnswerSelection,userAnswers,showAnswers }) => {
   const [shuffledAnswers, setShuffledAnswers] = useState([])
@@ -54,13 +55,13 @@ const Question = ({ question, onAnswerSelection,userAnswers,showAnswers }) => {
 
   return (
     <div className="px-10 py-2">
-        <h1 className="text-xl font-medium">{question.question}</h1>
+        <h1 className="text-xl font-medium">{he.decode(question.question)}</h1>
         <p className="mt-4">
             {shuffledAnswers.map((answer, index) => (
               <button key={index}
                       className={`mx-2 px-4 border border-black rounded-xl ${getButtonClass(index)}`}
                       onClick={() => handleAnswerClick(index)}>
-                {answer}
+                {he.decode(answer)}
               </button>
             ))}
         </p>
